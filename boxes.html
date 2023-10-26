@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Input Page</title>
+    <style>
+        #leftRect {
+            width: 50%;
+            height: 500px;
+            float: left;
+            background-color: rgb(<?= rand(0,255) ?>, <?= rand(0,255) ?>, <?= rand(0,255) ?>);
+        }
+        #rightDiv {
+            width: 50%;
+            height: 500px;
+            float: right;
+        }
+        .colorInput {
+            width: 100%;
+            height: 50px;
+            background-color: white;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button {
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div id="leftRect"></div>
+
+
+<div id="rightDiv">
+    <div class="colorInput"><span style="padding:3px;"> William</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">Walter</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">Jamie</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">Sam</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">Caleb</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">Axel</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">Parker</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">Josh</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <div class="colorInput"><span style="padding:3px;">J</span><input type="text" class="hexInput" maxlength="6" placeholder="Enter HEX code"></div>
+    <button onclick="changeColor()">New Target Color</button>
+    <button onclick="changeColors()">Apply Colors Hex Codes</button>
+    <button onclick="showAnswer()">Show Answer</button>
+    <div id="answer"></div>
+</div>
+
+<script>
+    let isRandom = true;
+    function showAnswer() {
+        var answerDiv = document.getElementById('answer');
+        var color = document.getElementById('leftRect').style.backgroundColor;
+        hexCode = rgbStringToHex(color);
+        answerDiv.textContent = hexCode + " -- RGB: " + color;
+    }
+
+    function rgbStringToHex(rgbString) {
+    const match = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    if (match) {
+        const [_, r, g, b] = match;
+        return rgbToHex(parseInt(r), parseInt(g), parseInt(b));
+    }
+    return null; // Return null if the string format doesn't match.
+}
+
+function rgbToHex(r, g, b) {
+    return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length == 1 ? '0' + hex : hex;
+}
+
+// Test
+let hexCode = rgbStringToHex('rgb(179, 20, 206)');
+console.log(hexCode);  // Output: #B314CE
+
+
+    function changeColor() {
+
+            document.getElementById('leftRect').style.backgroundColor = 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+            document.querySelectorAll('.colorInput').forEach(div => {
+                div.style.backgroundColor = "white";
+            });
+            document.querySelectorAll('.hexInput').forEach((input, index) => {
+              input.value = "";
+          })
+          document.getElementById("answer").textContent = "";
+
+    }
+
+    function changeColors() {
+
+            document.querySelectorAll('.hexInput').forEach((input, index) => {
+                let parentDiv = input.parentElement;
+                let hexValue = input.value || "FFFFFF";
+                if (/^[0-9A-Fa-f]{6}$/.test(hexValue)) {
+                    parentDiv.style.backgroundColor = "#" + hexValue;
+                } else {
+                    parentDiv.style.backgroundColor = "white";
+                }
+
+            });
+
+            isRandom = false;
+
+    }
+</script>
+</body>
+</html>
